@@ -1,0 +1,22 @@
+# Ignore build outputs
+/build/
+/.gradle/
+
+# Local configuration
+local.properties
+*.iml
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Secrets - DO NOT COMMIT
+google-services.json
+firebase-key.json
+*.keystore
+*.jks
+
+# OS files
+.DS_Store
+Thumbs.db
