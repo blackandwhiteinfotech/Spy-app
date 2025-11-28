@@ -21,10 +21,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: Create google-services.json placeholder
-      run: |
-        cp google-services.json.example google-services.json || echo "Using example config"
-    
     - name: Setup Gradle 8.2
       uses: gradle/actions/setup-gradle@v3
       with:
