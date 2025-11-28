@@ -2,22 +2,35 @@ package com.mdm.app.managers
 
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
+import android.os.Build
 import androidx.core.content.ContextCompat
 
 object PermissionManager {
     
     // List of required permissions
-    val REQUIRED_PERMISSIONS = arrayOf(
-        android.Manifest.permission.ACCESS_FINE_LOCATION,
-        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        android.Manifest.permission.INTERNET,
-        android.Manifest.permission.ACCESS_NETWORK_STATE,
-        android.Manifest.permission.FOREGROUND_SERVICE,
-        android.Manifest.permission.CAPTURE_VIDEO_OUTPUT
-    )
+    val REQUIRED_PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.READ_MEDIA_IMAGES,
+            android.Manifest.permission.READ_MEDIA_VIDEO,
+            android.Manifest.permission.READ_MEDIA_AUDIO,
+            android.Manifest.permission.INTERNET,
+            android.Manifest.permission.ACCESS_NETWORK_STATE,
+            android.Manifest.permission.FOREGROUND_SERVICE,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else {
+        arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.INTERNET,
+            android.Manifest.permission.ACCESS_NETWORK_STATE,
+            android.Manifest.permission.FOREGROUND_SERVICE
+        )
+    }
     
     fun hasPermission(context: Context, permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -43,7 +56,7 @@ object PermissionManager {
             android.Manifest.permission.INTERNET -> "Internet access for API communication"
             android.Manifest.permission.ACCESS_NETWORK_STATE -> "Monitor network usage"
             android.Manifest.permission.FOREGROUND_SERVICE -> "Background service for location tracking"
-            android.Manifest.permission.CAPTURE_VIDEO_OUTPUT -> "Screen capture for remote viewing"
+            android.Manifest.permission.POST_NOTIFICATIONS -> "Show notifications for service status"
             else -> permission
         }
     }
