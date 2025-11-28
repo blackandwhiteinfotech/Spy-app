@@ -25,11 +25,13 @@ jobs:
       run: |
         cp google-services.json.example google-services.json || echo "Using example config"
     
-    - name: Setup Gradle
+    - name: Setup Gradle 8.2
       uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.2'
     
     - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace --warning-mode all
     
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
