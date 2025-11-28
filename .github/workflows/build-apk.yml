@@ -21,16 +21,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: Setup Gradle 8.2
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: '8.2'
-    
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
     
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: ./gradlew assembleDebug --stacktrace --no-daemon
     
     - name: List APK outputs
       run: find . -name "*.apk" -type f
@@ -43,7 +38,7 @@ jobs:
         if-no-files-found: warn
         
     - name: Build Release APK
-      run: ./gradlew assembleRelease --stacktrace
+      run: ./gradlew assembleRelease --stacktrace --no-daemon
       continue-on-error: true
     
     - name: Upload Release APK
