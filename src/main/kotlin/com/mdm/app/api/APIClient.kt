@@ -7,7 +7,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import com.google.gson.Gson
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.SSLContext
 
 data class APIResponse(
     val status: String,
@@ -31,15 +30,10 @@ object APIClient {
         serverUrl = url.trimEnd('/')
         authToken = token
         
-        // Create SSL context for HTTPS
-        val sslContext = SSLContext.getInstance("TLSv1.2")
-        sslContext.init(null, null, null)
-        
         httpClient = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
-            .sslSocketFactory(sslContext.socketFactory)
             .build()
     }
     

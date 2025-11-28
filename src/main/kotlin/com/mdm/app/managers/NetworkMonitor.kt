@@ -1,8 +1,6 @@
 package com.mdm.app.managers
 
-import android.app.AppOpsManager
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.TrafficStats
 import android.os.Build
@@ -11,9 +9,7 @@ data class NetworkStats(
     val appName: String,
     val packageName: String,
     val bytesSent: Long,
-    val bytesReceived: Long,
-    val mobileBytesSent: Long,
-    val mobileBytesReceived: Long
+    val bytesReceived: Long
 )
 
 object NetworkMonitor {
@@ -36,8 +32,6 @@ object NetworkMonitor {
                 
                 val bytesSent = TrafficStats.getUidTxBytes(uid)
                 val bytesReceived = TrafficStats.getUidRxBytes(uid)
-                val mobileBytesSent = TrafficStats.getUidTxBytesMobileNetwork(uid)
-                val mobileBytesReceived = TrafficStats.getUidRxBytesMobileNetwork(uid)
                 
                 if (bytesSent > 0 || bytesReceived > 0) {
                     stats.add(
@@ -45,9 +39,7 @@ object NetworkMonitor {
                             appName = appName,
                             packageName = packageInfo.packageName,
                             bytesSent = bytesSent,
-                            bytesReceived = bytesReceived,
-                            mobileBytesSent = mobileBytesSent,
-                            mobileBytesReceived = mobileBytesReceived
+                            bytesReceived = bytesReceived
                         )
                     )
                 }
@@ -56,7 +48,7 @@ object NetworkMonitor {
             e.printStackTrace()
         }
         
-        return stats
+        return stats.sortedByDescending { it.bytesSent + it.bytesReceived }
     }
     
     fun formatBytes(bytes: Long): String {
