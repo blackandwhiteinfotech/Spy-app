@@ -30,17 +30,24 @@ jobs:
       with:
         gradle-version: '8.2'
     
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+    
     - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace --info 2>&1 | tail -200
+      run: ./gradlew assembleDebug --stacktrace
+    
+    - name: List APK outputs
+      run: find . -name "*.apk" -type f
     
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: MDM-App-Debug
         path: build/outputs/apk/debug/*.apk
+        if-no-files-found: warn
         
     - name: Build Release APK
-      run: gradle assembleRelease --stacktrace
+      run: ./gradlew assembleRelease --stacktrace
       continue-on-error: true
     
     - name: Upload Release APK
@@ -49,3 +56,4 @@ jobs:
       with:
         name: MDM-App-Release
         path: build/outputs/apk/release/*.apk
+        if-no-files-found: warn
